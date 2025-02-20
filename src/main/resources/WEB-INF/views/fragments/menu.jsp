@@ -24,6 +24,7 @@
 			<acme:menu-suboption code="master.menu.anonymous.favourite-link-edubusluc" action="https://www.astonmartinf1.com/en-GB/"/>
 			<acme:menu-suboption code="master.menu.anonymous.favourite-link-guipacrod" action="https://www.youtube.com/watch?v=dQw4w9WgXcQ"/>
 			<acme:menu-suboption code="master.menu.anonymous.favourite-link-jessalmun" action="https://www.realbetisbalompie.es/"/>
+			<acme:menu-suboption code="master.menu.anonymous.favourite-link-joslobtro" action="https://x.ai/"/>
 		</acme:menu-option>
 
 		<acme:menu-option code="master.menu.administrator" access="hasRealm('Administrator')">
