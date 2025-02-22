@@ -1,0 +1,2 @@
+validation.identifierCode = El código identificador debe comenzar con 2 o 3 letras mayúsculas (iniciales) seguidas de 6 dígitos.
+validation.phoneNumber = El número de teléfono debe contener entre 6 y 15 dígitos, opcionalmente comenzando con '+'.
