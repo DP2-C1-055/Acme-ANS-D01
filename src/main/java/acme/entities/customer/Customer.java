@@ -13,7 +13,7 @@ import org.hibernate.validator.constraints.Length;
 
 import acme.client.components.basis.AbstractEntity;
 import acme.client.components.validation.ValidNumber;
-import acme.entities.booking.Booking;
+import acme.entities.passenger.Passenger;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -55,6 +55,6 @@ public class Customer extends AbstractEntity {
 	@NotNull
 	@Valid
 	@ManyToOne(optional = false)
-	private Booking				booking;
+	private Passenger			passenger;
 
 }
