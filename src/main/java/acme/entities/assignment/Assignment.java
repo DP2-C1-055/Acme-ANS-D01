@@ -1,5 +1,5 @@
 
-package acme.entities.activityLog;
+package acme.entities.assignment;
 
 import java.util.Date;
 
@@ -8,7 +8,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 
@@ -22,7 +21,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class ActivityLog extends AbstractEntity {
+public class Assignment extends AbstractEntity {
 
 	// Serialisation identifier ----------------------------------------
 
@@ -30,32 +29,30 @@ public class ActivityLog extends AbstractEntity {
 
 	// Attributes ------------------------------------------------------
 
+	@NotNull
+	protected DutyCrew			duty;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@PastOrPresent
 	@NotNull
-	protected Date				registrationMoment;
+	protected Date				lastUpdate;
 
-	@NotBlank
-	@Length(max = 50)
-	protected String			typeIncident;
+	@NotNull
+	protected CurrentStatus		currentStatus;
 
-	@NotBlank
 	@Length(max = 255)
-	protected String			description;
-
-	@NotBlank
-	@Length(min = 0, max = 10)
-	protected Integer			range;
+	protected String			remarks;
 
 	// Relationships ----------------------------------------------------
+
+	@NotNull
+	@Valid
+	@ManyToOne(optional = false)
+	protected Crew				crew;
 
 	//	@NotNull
 	//	@Valid
 	//	@ManyToOne(optional = false)
 	//	protected Leg				leg;
 
-	@NotNull
-	@Valid
-	@ManyToOne(optional = false)
-	protected Crew				crew;
 }
