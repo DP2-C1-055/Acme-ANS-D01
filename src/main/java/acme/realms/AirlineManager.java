@@ -1,32 +1,28 @@
 
-package acme.entities.assignment;
+package acme.realms;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
-
-import javax.persistence.ManyToOne;
-
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.Valid;
 
-import acme.client.components.basis.AbstractEntity;
+import acme.client.components.basis.AbstractRole;
 import acme.client.components.mappings.Automapped;
 import acme.client.components.validation.Mandatory;
 import acme.client.components.validation.Optional;
 import acme.client.components.validation.ValidMoment;
+import acme.client.components.validation.ValidNumber;
 import acme.client.components.validation.ValidString;
-
-import acme.realms.crew.Crew;
-
+import acme.client.components.validation.ValidUrl;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
-public class Assignment extends AbstractEntity {
+public class AirlineManager extends AbstractRole {
 
 	// Serialisation version --------------------------------------------------
 
@@ -34,35 +30,23 @@ public class Assignment extends AbstractEntity {
 
 	// Attributes -------------------------------------------------------------
 
+	@Column(unique = true)
 	@Mandatory
-	@Valid
-	@Automapped
-	private DutyCrew			duty;
+	@ValidString(pattern = "^[A-Z]{2,3}\\d{6}$")
+	private String				identifier;
 
-	@Temporal(TemporalType.TIMESTAMP)
+	@Mandatory
+	@ValidNumber(min = 0, integer = 2, fraction = 0)
+	private Integer				yearsOfExperience;
+
+	@Mandatory
 	@ValidMoment(past = true)
-	@Mandatory
-	private Date				lastUpdate;
-
-	@Mandatory
-	@Valid
-	@Automapped
-	private CurrentStatus		currentStatus;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date				dateOfBirth;
 
 	@Optional
-	@ValidString
-	private String				remarks;
-
-	// Relationships ----------------------------------------------------
-
-	@Mandatory
-	@Valid
-	@ManyToOne(optional = false)
-	protected Crew				crew;
-
-	//	@Mandatory
-	//	@Valid
-	//	@ManyToOne(optional = false)
-	//	protected Leg				leg;
+	@ValidUrl
+	@Automapped
+	private String				pictureUrl;
 
 }
