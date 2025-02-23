@@ -1,5 +1,5 @@
 
-package acme.entities.crew;
+package acme.realms.crew;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,34 +23,34 @@ public class Crew extends AbstractEntity {
 
 	// Serialisation version --------------------------------------------------
 
-	protected static final long		serialVersionUID	= 1L;
+	private static final long	serialVersionUID	= 1L;
 
 	// Attributes -------------------------------------------------------------
 
 	@Mandatory
 	@Column(unique = true)
 	@ValidString(pattern = "^[A-Z]{2,3}\\d{6}$", message = "{validation.code}")
-	protected String				code;
+	private String				code;
 
 	@Mandatory
 	@ValidString(pattern = "^\\+?\\d{6,15}$", message = "{validation.phoneNumber}")
-	protected String				phoneNumber;
+	private String				phoneNumber;
 
 	@Mandatory
 	@ValidString
-	protected String				skills;
+	private String				skills;
 
 	@Mandatory
 	@Valid
 	@Automapped
-	protected AvailabilityStatus	availability;
+	private AvailabilityStatus	availability;
 
 	@Mandatory
 	@ValidMoney
-	protected Money					salary;
+	private Money				salary;
 
 	@Optional
 	@ValidNumber(min = 0, integer = 2, fraction = 0)
-	protected Integer				yearsExperience;
+	private Integer				yearsExperience;
 
 }
