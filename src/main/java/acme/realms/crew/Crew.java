@@ -5,7 +5,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.Valid;
 
-import acme.client.components.basis.AbstractEntity;
+import acme.client.components.basis.AbstractRole;
+
 import acme.client.components.datatypes.Money;
 import acme.client.components.mappings.Automapped;
 import acme.client.components.validation.Mandatory;
@@ -19,7 +20,8 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Crew extends AbstractEntity {
+
+public class Crew extends AbstractRole {
 
 	// Serialisation version --------------------------------------------------
 
@@ -52,5 +54,12 @@ public class Crew extends AbstractEntity {
 	@Optional
 	@ValidNumber(min = 0, integer = 2, fraction = 0)
 	private Integer				yearsExperience;
+
+	// Relationships ----------------------------------------------------
+
+	//	@NotNull
+	//	@Valid
+	//	@ManyToOne(optional = false)
+	//	protected Airline
 
 }

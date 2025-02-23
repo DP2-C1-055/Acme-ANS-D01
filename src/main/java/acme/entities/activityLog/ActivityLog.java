@@ -1,68 +1,60 @@
 
-package acme.entities.assignment;
+package acme.entities.activityLog;
 
 import java.util.Date;
 
 import javax.persistence.Entity;
-
 import javax.persistence.ManyToOne;
-
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.Valid;
 
 import acme.client.components.basis.AbstractEntity;
-import acme.client.components.mappings.Automapped;
 import acme.client.components.validation.Mandatory;
-import acme.client.components.validation.Optional;
 import acme.client.components.validation.ValidMoment;
+import acme.client.components.validation.ValidNumber;
 import acme.client.components.validation.ValidString;
-
 import acme.realms.crew.Crew;
-
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
-public class Assignment extends AbstractEntity {
+public class ActivityLog extends AbstractEntity {
 
-	// Serialisation version --------------------------------------------------
+	// Serialisation identifier ----------------------------------------
 
 	private static final long	serialVersionUID	= 1L;
 
-	// Attributes -------------------------------------------------------------
-
-	@Mandatory
-	@Valid
-	@Automapped
-	private DutyCrew			duty;
+	// Attributes ------------------------------------------------------
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@ValidMoment(past = true)
 	@Mandatory
-	private Date				lastUpdate;
+	private Date				registrationMoment;
 
 	@Mandatory
-	@Valid
-	@Automapped
-	private CurrentStatus		currentStatus;
+	@ValidString(max = 50)
+	private String				typeIncident;
 
-	@Optional
+	@Mandatory
 	@ValidString
-	private String				remarks;
+	private String				description;
+
+	@Mandatory
+	@ValidNumber(min = 0, max = 10, fraction = 0)
+	private Integer				range;
 
 	// Relationships ----------------------------------------------------
-
-	@Mandatory
-	@Valid
-	@ManyToOne(optional = false)
-	protected Crew				crew;
 
 	//	@Mandatory
 	//	@Valid
 	//	@ManyToOne(optional = false)
-	//	protected Leg				leg;
+	//	private Leg				leg;
 
+	@Mandatory
+	@Valid
+	@ManyToOne(optional = false)
+	private Crew				crew;
 }
