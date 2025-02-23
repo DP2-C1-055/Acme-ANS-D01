@@ -8,7 +8,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 
 import acme.client.components.basis.AbstractEntity;
 import acme.client.components.validation.Mandatory;
@@ -43,7 +42,7 @@ public class ActivityLog extends AbstractEntity {
 	@ValidString
 	private String				description;
 
-	@NotBlank
+	@Mandatory
 	@ValidNumber(min = 0, max = 10, fraction = 0)
 	private Integer				range;
 
