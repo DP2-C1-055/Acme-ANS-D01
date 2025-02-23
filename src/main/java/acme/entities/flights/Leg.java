@@ -4,17 +4,25 @@ package acme.entities.flights;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.Valid;
 
+import acme.client.components.basis.AbstractEntity;
 import acme.client.components.validation.Mandatory;
 import acme.client.components.validation.ValidMoment;
 import acme.client.components.validation.ValidNumber;
 import acme.client.components.validation.ValidString;
+import acme.entities.airports.Airport;
+import lombok.Getter;
+import lombok.Setter;
 
-public class Leg {
+@Entity
+@Getter
+@Setter
+public class Leg extends AbstractEntity {
 
 	// Serialisation version --------------------------------------------------
 
@@ -58,10 +66,10 @@ public class Leg {
 	private Airport				arrivalAirport;
 
 	// El Aircraft asignado, que pertenece a una Airline, de la cual se extrae el código IATA.
-	@Mandatory
-	@ManyToOne(optional = false)
-	@Valid
-	private Aircraft			aircraft;
+	//@Mandatory
+	//@ManyToOne(optional = false)
+	//@Valid
+	//private Aircraft			aircraft;
 
 	@Mandatory
 	@ManyToOne(optional = false)
