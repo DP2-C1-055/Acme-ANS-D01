@@ -8,13 +8,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PastOrPresent;
-
-import org.hibernate.validator.constraints.Length;
 
 import acme.client.components.basis.AbstractEntity;
-import acme.entities.crew.Crew;
+import acme.client.components.mappings.Automapped;
+import acme.client.components.validation.Mandatory;
+import acme.client.components.validation.Optional;
+import acme.client.components.validation.ValidMoment;
+import acme.client.components.validation.ValidString;
+import acme.realms.crew.Crew;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,36 +24,40 @@ import lombok.Setter;
 @Setter
 public class Assignment extends AbstractEntity {
 
-	// Serialisation identifier ----------------------------------------
+	// Serialisation version --------------------------------------------------
 
-	protected static final long	serialVersionUID	= 1L;
+	private static final long	serialVersionUID	= 1L;
 
-	// Attributes ------------------------------------------------------
+	// Attributes -------------------------------------------------------------
 
-	@NotNull
-	protected DutyCrew			duty;
+	@Mandatory
+	@Valid
+	@Automapped
+	private DutyCrew			duty;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@PastOrPresent
-	@NotNull
-	protected Date				lastUpdate;
+	@ValidMoment(past = true)
+	@Mandatory
+	private Date				lastUpdate;
 
-	@NotNull
-	protected CurrentStatus		currentStatus;
+	@Mandatory
+	@Valid
+	@Automapped
+	private CurrentStatus		currentStatus;
 
-	@Length(max = 255)
-	protected String			remarks;
+	@Optional
+	@ValidString
+	private String				remarks;
 
 	// Relationships ----------------------------------------------------
 
-	@NotNull
+	@Mandatory
 	@Valid
 	@ManyToOne(optional = false)
 	protected Crew				crew;
 
-	//	@NotNull
+	//	@Mandatory
 	//	@Valid
 	//	@ManyToOne(optional = false)
 	//	protected Leg				leg;
-
 }
