@@ -27,12 +27,13 @@ public class Airport extends AbstractEntity {
 	// Attributes -------------------------------------------------------------
 
 	@Mandatory
-	@ValidString(min = 1, max = 50)
+	@ValidString(max = 50)
+	@Automapped
 	private String				name;
 
-	@Column(unique = true)
 	@Mandatory
-	@ValidString(pattern = "[A-Z]{3}")
+	@ValidString(pattern = "^[A-Z]{3}$")
+	@Column(unique = true)
 	private String				iataCode;
 
 	@Mandatory
@@ -41,11 +42,13 @@ public class Airport extends AbstractEntity {
 	private OperationalScope	operationalScope;
 
 	@Mandatory
-	@ValidString(min = 1, max = 50)
+	@ValidString(max = 50)
+	@Automapped
 	private String				city;
 
 	@Mandatory
 	@ValidString(min = 1, max = 50)
+	@Automapped
 	private String				country;
 
 	@Optional
@@ -60,5 +63,6 @@ public class Airport extends AbstractEntity {
 
 	@Optional
 	@ValidString(pattern = "^\\+?\\d{6,15}$")
+	@Automapped
 	private String				contactPhone;
 }
