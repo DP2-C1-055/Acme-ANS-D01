@@ -6,14 +6,14 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.PastOrPresent;
-import javax.validation.constraints.Pattern;
-
-import org.hibernate.validator.constraints.Length;
 
 import acme.client.components.basis.AbstractEntity;
+import acme.client.components.validation.Mandatory;
+import acme.client.components.validation.Optional;
+import acme.client.components.validation.ValidEmail;
+import acme.client.components.validation.ValidMoment;
+import acme.client.components.validation.ValidString;
+import acme.client.components.validation.ValidUrl;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,32 +22,34 @@ import lombok.Setter;
 @Setter
 public class Airline extends AbstractEntity {
 
-	protected static final long	serialVersionUID	= 1L;
+	private static final long	serialVersionUID	= 1L;
 
-	@NotBlank
-	@Length(max = 50)
-	protected String			name;
+	@Mandatory
+	@ValidString(max = 50)
+	private String				name;
 
-	@Pattern(regexp = "^[A-Z]{2}X$")
-	@NotBlank
-	protected String			IATACode;
+	@ValidString(pattern = "^[A-Z]{2}X$")
+	@Mandatory
+	private String				IATACode;
 
-	@NotBlank
-	//@Link ????
-	protected String			website;
+	@Mandatory
+	@ValidUrl
+	private String				website;
 
-	@NotBlank
-	protected AirLineType		airlineType;
+	@Mandatory
+	private AirLineType			airlineType;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@PastOrPresent
-	@NotBlank
-	protected Date				foundationMoment;
+	@ValidMoment(past = true)
+	@Mandatory
+	private Date				foundationMoment;
 
-	@Email
-	protected String			email;
+	@ValidEmail
+	@Optional
+	private String				email;
 
-	@Pattern(regexp = "^\\+?\\d{6,15}$")
-	protected String			phoneNumber;
+	@ValidString(pattern = "^\\+?\\d{6,15}$")
+	@Optional
+	private String				phoneNumber;
 
 }
