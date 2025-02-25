@@ -4,9 +4,7 @@ package acme.entities.assignment;
 import java.util.Date;
 
 import javax.persistence.Entity;
-
 import javax.persistence.ManyToOne;
-
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.Valid;
@@ -17,9 +15,7 @@ import acme.client.components.validation.Mandatory;
 import acme.client.components.validation.Optional;
 import acme.client.components.validation.ValidMoment;
 import acme.client.components.validation.ValidString;
-
 import acme.realms.crew.Crew;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -39,9 +35,9 @@ public class Assignment extends AbstractEntity {
 	@Automapped
 	private DutyCrew			duty;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@ValidMoment(past = true)
 	@Mandatory
+	@ValidMoment(past = true)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date				lastUpdate;
 
 	@Mandatory
@@ -51,6 +47,7 @@ public class Assignment extends AbstractEntity {
 
 	@Optional
 	@ValidString
+	@Automapped
 	private String				remarks;
 
 	// Relationships ----------------------------------------------------
