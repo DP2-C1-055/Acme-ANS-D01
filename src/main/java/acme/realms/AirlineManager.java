@@ -30,13 +30,14 @@ public class AirlineManager extends AbstractRole {
 
 	// Attributes -------------------------------------------------------------
 
-	@Column(unique = true)
 	@Mandatory
 	@ValidString(pattern = "^[A-Z]{2,3}\\d{6}$")
+	@Column(unique = true)
 	private String				identifier;
 
 	@Mandatory
-	@ValidNumber(min = 0, integer = 2, fraction = 0)
+	@ValidNumber(min = 0, integer = 2, fraction = 0) //TODO: Definir máximo. preguntar en el foro
+	@Automapped
 	private Integer				yearsOfExperience;
 
 	@Mandatory

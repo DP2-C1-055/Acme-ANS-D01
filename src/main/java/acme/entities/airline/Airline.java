@@ -1,8 +1,11 @@
 
-package acme.entities.airports;
+package acme.entities.airline;
 
-import javax.persistence.Column;
+import java.util.Date;
+
 import javax.persistence.Entity;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.Valid;
 
 import acme.client.components.basis.AbstractEntity;
@@ -10,6 +13,7 @@ import acme.client.components.mappings.Automapped;
 import acme.client.components.validation.Mandatory;
 import acme.client.components.validation.Optional;
 import acme.client.components.validation.ValidEmail;
+import acme.client.components.validation.ValidMoment;
 import acme.client.components.validation.ValidString;
 import acme.client.components.validation.ValidUrl;
 import lombok.Getter;
@@ -18,13 +22,9 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Airport extends AbstractEntity {
-
-	// Serialisation version --------------------------------------------------
+public class Airline extends AbstractEntity {
 
 	private static final long	serialVersionUID	= 1L;
-
-	// Attributes -------------------------------------------------------------
 
 	@Mandatory
 	@ValidString(max = 50)
@@ -33,28 +33,23 @@ public class Airport extends AbstractEntity {
 
 	@Mandatory
 	@ValidString(pattern = "^[A-Z]{3}$")
-	@Column(unique = true)
-	private String				iataCode;
+	@Automapped
+	private String				IATACode;
+
+	@Mandatory
+	@ValidUrl
+	@Automapped
+	private String				website;
 
 	@Mandatory
 	@Valid
 	@Automapped
-	private OperationalScope	operationalScope;
+	private AirLineType			airlineType;
 
 	@Mandatory
-	@ValidString(max = 50)
-	@Automapped
-	private String				city;
-
-	@Mandatory
-	@ValidString(max = 50)
-	@Automapped
-	private String				country;
-
-	@Optional
-	@ValidUrl
-	@Automapped
-	private String				website;
+	@ValidMoment(past = true)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date				foundationMoment;
 
 	@Optional
 	@ValidEmail
@@ -64,5 +59,6 @@ public class Airport extends AbstractEntity {
 	@Optional
 	@ValidString(pattern = "^\\+?\\d{6,15}$")
 	@Automapped
-	private String				contactPhone;
+	private String				phoneNumber;
+
 }
