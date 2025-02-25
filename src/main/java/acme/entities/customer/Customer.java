@@ -5,12 +5,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-import org.hibernate.validator.constraints.Length;
-
 import acme.client.components.basis.AbstractEntity;
+import acme.client.components.mappings.Automapped;
 import acme.client.components.validation.Mandatory;
 import acme.client.components.validation.Optional;
 import acme.client.components.validation.ValidNumber;
@@ -27,35 +25,40 @@ public class Customer extends AbstractEntity {
 	protected static final long	serialVersionUID	= 1L;
 
 	@Mandatory
-	@Column(unique = true)
 	@Pattern(regexp = "^[A-Z]{2,3}\\d{6}$", message = "{validation.identifierCode}")
+	@Column(unique = true)
 	protected String			identifier;
 
 	@Mandatory
 	@Pattern(regexp = "^\\+?\\d{6,15}$", message = "{validation.phoneNumber}")
+	@Automapped
 	protected String			phoneNumber;
 
 	@Mandatory
 	@ValidString
+	@Automapped
 	protected String			address;
 
 	@Mandatory
-	@Length(max = 50)
+	@ValidString(max = 50)
+	@Automapped
 	protected String			city;
 
 	@Mandatory
-	@Length(max = 50)
+	@ValidString(max = 50)
+	@Automapped
 	protected String			country;
 
-	@ValidNumber(max = 500)
 	@Optional
+	@ValidNumber(max = 500)
+	@Automapped
 	protected Integer			earnedPoints;
 
-	protected boolean			draftMode;
+	//protected boolean			draftMode;
 
 	// Relationships ----------------------------------------------------------
 
-	@NotNull
+	@Mandatory
 	@Valid
 	@ManyToOne(optional = false)
 	private Passenger			passenger;

@@ -9,9 +9,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Pattern;
 
-import org.hibernate.validator.constraints.Length;
-
 import acme.client.components.basis.AbstractEntity;
+import acme.client.components.mappings.Automapped;
 import acme.client.components.validation.Mandatory;
 import acme.client.components.validation.Optional;
 import acme.client.components.validation.ValidEmail;
@@ -29,24 +28,27 @@ public class Passenger extends AbstractEntity {
 
 	@Mandatory
 	@ValidString
+	@Automapped
 	protected String			fullName;
 
 	@Mandatory
 	@ValidEmail
+	@Automapped
 	protected String			email;
 
 	@Mandatory
-	@Column(unique = true)
 	@Pattern(regexp = "^[A-Z0-9]{6,9}$", message = "{validation.passportNumber}")
+	@Column(unique = true)
 	protected String			passportNumber;
 
-	@Temporal(TemporalType.DATE)
-	@ValidMoment(past = true)
 	@Mandatory
+	@ValidMoment(past = true)
+	@Temporal(TemporalType.DATE)
 	protected Date				dateOfBirth;
 
-	@Length(max = 50)
 	@Optional
+	@ValidString(max = 50)
+	@Automapped
 	protected String			specialNeeds;
 
 }

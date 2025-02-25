@@ -9,11 +9,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import acme.client.components.basis.AbstractEntity;
 import acme.client.components.datatypes.Money;
+import acme.client.components.mappings.Automapped;
 import acme.client.components.validation.Mandatory;
 import acme.client.components.validation.Optional;
 import acme.client.components.validation.ValidMoment;
@@ -30,35 +30,40 @@ public class Booking extends AbstractEntity {
 	protected static final long	serialVersionUID	= 1L;
 
 	@Mandatory
-	@Column(unique = true)
 	@Pattern(regexp = "^[A-Z0-9]{6,8}$", message = "{validation.locatorCode}")
+	@Column(unique = true)
 	protected String			locatorCode;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@ValidMoment
 	@Mandatory
+	@ValidMoment
+	@Temporal(TemporalType.TIMESTAMP)
 	protected Date				purchaseMoment;
 
 	@Mandatory
+	@Valid
+	@Automapped
 	protected TravelClass		travelClass;
 
 	@Mandatory
 	@ValidMoney
-	protected Money				price;
+	@Automapped
+	protected Money				price; //especificar el rango - mirar el foro
 
 	@Optional
+	@Valid
+	@Automapped
 	protected String			lastNibble;
 
-	protected boolean			draftMode;
+	//protected boolean			draftMode;
 
 	// Relationships ----------------------------------------------------------
 
-	@NotNull
+	@Mandatory
 	@Valid
 	@ManyToOne(optional = false)
 	private Customer			customer;
 
-	//	@NotNull
+	//	@Mandatory
 	//	@Valid
 	//	@ManyToOne(optional = false)
 	//	private Flight fligth;
