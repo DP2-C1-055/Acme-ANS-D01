@@ -6,8 +6,10 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.Valid;
 
 import acme.client.components.basis.AbstractEntity;
+import acme.client.components.mappings.Automapped;
 import acme.client.components.validation.Mandatory;
 import acme.client.components.validation.Optional;
 import acme.client.components.validation.ValidEmail;
@@ -26,30 +28,37 @@ public class Airline extends AbstractEntity {
 
 	@Mandatory
 	@ValidString(max = 50)
+	@Automapped
 	private String				name;
 
-	@ValidString(pattern = "^[A-Z]{2}X$")
 	@Mandatory
+	@ValidString(pattern = "^[A-Z]{3}$")
+	@Automapped
 	private String				IATACode;
 
 	@Mandatory
 	@ValidUrl
+	@Automapped
 	private String				website;
 
 	@Mandatory
+	@Valid
+	@Automapped
 	private AirLineType			airlineType;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@ValidMoment(past = true)
 	@Mandatory
+	@ValidMoment(past = true)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date				foundationMoment;
 
-	@ValidEmail
 	@Optional
+	@ValidEmail
+	@Automapped
 	private String				email;
 
-	@ValidString(pattern = "^\\+?\\d{6,15}$")
 	@Optional
+	@ValidString(pattern = "^\\+?\\d{6,15}$")
+	@Automapped
 	private String				phoneNumber;
 
 }
