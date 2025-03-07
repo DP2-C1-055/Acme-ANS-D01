@@ -36,7 +36,7 @@ public class AirlineManager extends AbstractRole {
 	private String				identifier;
 
 	@Mandatory
-	@ValidNumber(min = 0, integer = 2, fraction = 0) //TODO: Definir máximo. preguntar en el foro
+	@ValidNumber(min = 0, max = 75, integer = 2, fraction = 0)
 	@Automapped
 	private Integer				yearsOfExperience;
 
