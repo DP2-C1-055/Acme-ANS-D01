@@ -40,7 +40,7 @@ public class Flight extends AbstractEntity {
 	private boolean				selfTransfer;
 
 	@Mandatory
-	@ValidMoney
+	@ValidMoney(min = 0, max = 1000000)
 	@Automapped
 	private Money				cost;
 
