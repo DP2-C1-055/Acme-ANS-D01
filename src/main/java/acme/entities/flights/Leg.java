@@ -37,17 +37,17 @@ public class Leg extends AbstractEntity {
 	private String				flightNumber;
 
 	@Mandatory
-	@ValidMoment(past = true)
+	@ValidMoment(past = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date				scheduledDeparture;
 
 	@Mandatory
-	@ValidMoment(past = true)
+	@ValidMoment(past = false)
 	private Date				scheduledArrival;
 
 	@Mandatory
-	@ValidNumber(min = 0, integer = 2, fraction = 0)
-	private Double				durationInHours;
+	@ValidNumber(min = 1, max = 1000, integer = 4, fraction = 0)
+	private Double				durationInMinutes;
 
 	@Mandatory
 	@Valid
