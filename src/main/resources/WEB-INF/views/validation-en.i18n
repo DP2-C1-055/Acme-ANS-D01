@@ -1,0 +1,2 @@
+acme.validation.leg.invalid-flight-number.message = Duplicate flight number. The flight number must be unique.
+acme.validation.leg.nonexistent-airline.message = Non-existent airline. The IATA code does not correspond to any registered airline.

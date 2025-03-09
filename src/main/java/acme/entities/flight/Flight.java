@@ -1,5 +1,5 @@
 
-package acme.entities.flights;
+package acme.entities.flight;
 
 import java.util.Date;
 
@@ -32,12 +32,13 @@ public class Flight extends AbstractEntity {
 
 	@Mandatory
 	@ValidString(min = 1, max = 50)
+	@Automapped
 	private String				tag;
 
 	@Mandatory
-	//@Valid
+	@Valid
 	@Automapped
-	private boolean				selfTransfer;
+	private Indication			indication;
 
 	@Mandatory
 	@ValidMoney(min = 0, max = 1000000)
@@ -45,7 +46,7 @@ public class Flight extends AbstractEntity {
 	private Money				cost;
 
 	@Optional
-	@ValidString
+	@ValidString(min = 0, max = 255)
 	@Automapped
 	private String				description;
 
@@ -58,6 +59,7 @@ public class Flight extends AbstractEntity {
 		return null;
 	}
 
+	//Validación custom
 	@Transient
 	public Date getScheduledArrival() {
 		//TO DO IN D03
