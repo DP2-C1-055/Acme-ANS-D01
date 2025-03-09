@@ -55,28 +55,6 @@ public class Leg extends AbstractEntity {
 	@Automapped
 	private LegStatus			status;
 
-	// Relationships ----------------------------------------------------------
-
-	@Mandatory
-	@Valid
-	@ManyToOne(optional = false)
-	private Airport				departureAirport;
-
-	@Mandatory
-	@Valid
-	@ManyToOne(optional = false)
-	private Airport				arrivalAirport;
-
-	@Mandatory
-	@Valid
-	@ManyToOne(optional = false)
-	private Aircraft			aircraft;
-
-	@Mandatory
-	@Valid
-	@ManyToOne(optional = false)
-	private Flight				flight;
-
 	// Derived attribute ------------------------------------------------------
 
 
@@ -89,5 +67,28 @@ public class Leg extends AbstractEntity {
 		double hours = diffMillis / (1000.0 * 60 * 60);
 		return hours;
 	}
+
+	// Relationships ----------------------------------------------------------
+
+
+	@Mandatory
+	@Valid
+	@ManyToOne(optional = false)
+	private Airport		departureAirport;
+
+	@Mandatory
+	@Valid
+	@ManyToOne(optional = false)
+	private Airport		arrivalAirport;
+
+	@Mandatory
+	@Valid
+	@ManyToOne(optional = false)
+	private Aircraft	aircraft;
+
+	@Mandatory
+	@Valid
+	@ManyToOne(optional = false)
+	private Flight		flight;
 
 }

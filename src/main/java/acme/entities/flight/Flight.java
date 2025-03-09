@@ -1,10 +1,11 @@
 
 package acme.entities.flight;
 
+import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 import javax.validation.Valid;
 
@@ -15,6 +16,9 @@ import acme.client.components.validation.Mandatory;
 import acme.client.components.validation.Optional;
 import acme.client.components.validation.ValidMoney;
 import acme.client.components.validation.ValidString;
+import acme.client.helpers.SpringHelper;
+import acme.entities.leg.Leg;
+import acme.features.manager.leg.ManagerLegRepository;
 import acme.realms.AirlineManager;
 import lombok.Getter;
 import lombok.Setter;
@@ -55,33 +59,86 @@ public class Flight extends AbstractEntity {
 
 	@Transient
 	public Date getScheduledDeparture() {
-		//TO DO IN D03
-		return null;
+		ManagerLegRepository legRepo = SpringHelper.getBean(ManagerLegRepository.class);
+		Collection<Leg> legs = legRepo.findLegsByFlightId(this.getId());
+		if (legs == null || legs.isEmpty()) // He tenido que hacerlo así porque da error al usar el tipo Optional por incompatibilidad con @Optional
+			return null;
+		Date minDeparture = null;
+		for (Leg leg : legs) {
+			Date departure = leg.getScheduledDeparture();
+			if (departure != null)
+				if (minDeparture == null || departure.before(minDeparture))
+					minDeparture = departure;
+		}
+		return minDeparture;
 	}
 
-	//Validación custom
 	@Transient
 	public Date getScheduledArrival() {
-		//TO DO IN D03
-		return null;
+		ManagerLegRepository legRepo = SpringHelper.getBean(ManagerLegRepository.class);
+		Collection<Leg> legs = legRepo.findLegsByFlightId(this.getId());
+		if (legs == null || legs.isEmpty())
+			return null;
+		Date maxArrival = null;
+		for (Leg leg : legs) {
+			Date arrival = leg.getScheduledArrival();
+			if (arrival != null)
+				if (maxArrival == null || arrival.after(maxArrival))
+					maxArrival = arrival;
+		}
+		return maxArrival;
 	}
 
 	@Transient
 	public String getOriginCity() {
-		//TO DO IN D03
+		ManagerLegRepository legRepo = SpringHelper.getBean(ManagerLegRepository.class);
+		Collection<Leg> legs = legRepo.findLegsByFlightId(this.getId());
+		if (legs == null || legs.isEmpty())
+			return null;
+		Date earliestDeparture = null;
+		Leg firstLeg = null;
+		for (Leg leg : legs) {
+			Date departure = leg.getScheduledDeparture();
+			if (departure != null)
+				if (earliestDeparture == null || departure.before(earliestDeparture)) {
+					earliestDeparture = departure;
+					firstLeg = leg;
+				}
+		}
+		if (firstLeg != null && firstLeg.getDepartureAirport() != null)
+			return firstLeg.getDepartureAirport().getCity();
 		return null;
 	}
 
 	@Transient
 	public String getDestinationCity() {
-		//TO DO IN D03
+		ManagerLegRepository legRepo = SpringHelper.getBean(ManagerLegRepository.class);
+		Collection<Leg> legs = legRepo.findLegsByFlightId(this.getId());
+		if (legs == null || legs.isEmpty())
+			return null;
+		Date latestArrival = null;
+		Leg lastLeg = null;
+		for (Leg leg : legs) {
+			Date arrival = leg.getScheduledArrival();
+			if (arrival != null)
+				if (latestArrival == null || arrival.after(latestArrival)) {
+					latestArrival = arrival;
+					lastLeg = leg;
+				}
+		}
+		if (lastLeg != null && lastLeg.getArrivalAirport() != null)
+			return lastLeg.getArrivalAirport().getCity();
 		return null;
 	}
 
 	@Transient
 	public int getNumberOfLayovers() {
-		//TO DO IN D03
-		return 0;
+		ManagerLegRepository legRepo = SpringHelper.getBean(ManagerLegRepository.class);
+		Collection<Leg> legs = legRepo.findLegsByFlightId(this.getId());
+		if (legs == null || legs.isEmpty())
+			return 0;
+		// Número de layovers es igual al número de legs menos uno.
+		return Math.max(legs.size() - 1, 0);
 	}
 
 	// Relationships ----------------------------------------------------------
@@ -89,7 +146,7 @@ public class Flight extends AbstractEntity {
 
 	@Mandatory
 	@Valid
-	@OneToOne(optional = false)
+	@ManyToOne(optional = false)
 	private AirlineManager airlineManager;
 
 }
