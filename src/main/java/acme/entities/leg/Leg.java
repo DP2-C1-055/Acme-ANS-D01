@@ -15,7 +15,6 @@ import acme.client.components.basis.AbstractEntity;
 import acme.client.components.mappings.Automapped;
 import acme.client.components.validation.Mandatory;
 import acme.client.components.validation.ValidMoment;
-import acme.client.components.validation.ValidString;
 import acme.constraints.ValidFlightNumber;
 import acme.entities.aircraft.Aircraft;
 import acme.entities.airports.Airport;
@@ -26,7 +25,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@ValidFlightNumber // CUSTOM VALIDATOR
+// CUSTOM VALIDATOR
 public class Leg extends AbstractEntity {
 
 	// Serialisation version --------------------------------------------------
@@ -36,7 +35,7 @@ public class Leg extends AbstractEntity {
 	// Attributes -------------------------------------------------------------
 
 	@Mandatory
-	@ValidString(pattern = "^[A-Z]{3}\\d{4}$")
+	@ValidFlightNumber
 	@Column(unique = true)
 	private String				flightNumber;
 
