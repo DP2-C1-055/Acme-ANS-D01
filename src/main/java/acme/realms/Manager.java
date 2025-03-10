@@ -22,6 +22,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@ValidIdentifier
 public class Manager extends AbstractRole {
 
 	// Serialisation version --------------------------------------------------
@@ -31,7 +32,7 @@ public class Manager extends AbstractRole {
 	// Attributes -------------------------------------------------------------
 
 	@Mandatory
-	@ValidIdentifier
+
 	@Column(unique = true)
 	private String				identifier;
 

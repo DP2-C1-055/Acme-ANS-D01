@@ -4,15 +4,13 @@ package acme.constraints;
 import javax.validation.ConstraintValidatorContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import acme.client.components.principals.DefaultUserIdentity;
 import acme.client.components.validation.AbstractValidator;
 import acme.features.authenticated.manager.AuthenticatedManagerRepository;
 import acme.realms.Manager;
 
-public class IdentifierValidator extends AbstractValidator<ValidIdentifier, String> {
+public class IdentifierValidator extends AbstractValidator<ValidIdentifier, Manager> {
 
 	// Internal state ---------------------------------------------------------
 
@@ -26,41 +24,42 @@ public class IdentifierValidator extends AbstractValidator<ValidIdentifier, Stri
 	}
 
 	@Override
-	public boolean isValid(final String identifier, final ConstraintValidatorContext context) {
+	public boolean isValid(final Manager manager, final ConstraintValidatorContext context) {
 		assert context != null;
 
 		boolean result;
 
-		if (identifier == null)
+		if (manager == null)
 			super.state(context, false, "*", "javax.validation.constraints.NotNull.message");
 		else {
-			// 1. Validar el formato del identifier
-			boolean matchesPattern = identifier.matches("^[A-Z]{2,3}\\d{6}$");
-			super.state(context, matchesPattern, "identifier", "acme.validation.manager.invalid-identifier.message");
-
-			// 2. Validar la unicidad del identifier
-			Manager existingManager = this.repository.findManagerByIdentifier(identifier);
-			boolean uniqueIdentifier = existingManager == null;
-			super.state(context, uniqueIdentifier, "identifier", "acme.validation.manager.duplicated-identifier.message");
-
-			// 3. Validar que las dos primeras letras del identifier coinciden con las iniciales de la identidad del manager actual
-			if (identifier.length() >= 2) {
-				// Obtener el username del usuario autenticado
-				Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-				String username = authentication.getName();
-
-				// Buscar el Manager por username
-				Manager currentManager = this.repository.findManagerByUsername(username);
-				if (currentManager != null) {
-					DefaultUserIdentity identity = currentManager.getIdentity();
-					if (identity != null) {
-						String name = identity.getName();
-						String surname = identity.getSurname();
-						boolean initialsValid = false;
-						if (name != null && surname != null && !name.isEmpty() && !surname.isEmpty())
-							initialsValid = identifier.charAt(0) == name.charAt(0) && identifier.charAt(1) == surname.charAt(0);
-						super.state(context, initialsValid, "identifier", "acme.validation.manager.incorrect-initials.message");
+			{
+				// Validar que el identifier cumple con el patrón "^[A-Z]{2,3}\d{6}$"
+				String identifier = manager.getIdentifier();
+				boolean matchesPattern = identifier != null && identifier.matches("^[A-Z]{2,3}\\d{6}$");
+				super.state(context, matchesPattern, "identifier", "acme.validation.manager.invalid-identifier.message");
+			}
+			{
+				// Validar que el identifier sea único
+				Manager existingManager = this.repository.findManagerByIdentifier(manager.getIdentifier());
+				boolean uniqueIdentifier = existingManager == null || existingManager.equals(manager);
+				super.state(context, uniqueIdentifier, "identifier", "acme.validation.manager.duplicated-identifier.message");
+			}
+			{
+				// Validar que las dos primeras letras del identifier coinciden con las iniciales de la identidad.
+				String identifier = manager.getIdentifier();
+				DefaultUserIdentity identity = manager.getIdentity();
+				if (identifier != null && identity != null && identifier.length() >= 2) {
+					String name = identity.getName();
+					String surname = identity.getSurname();
+					// Se valida que la primera letra de identifier coincide con la del name,
+					// y la segunda letra de identifier coincide con la del surname.
+					boolean initialsValid = false;
+					if (name != null && surname != null && !name.isEmpty() && !surname.isEmpty()) {
+						char initialName = name.charAt(0);
+						char initialSurname = surname.charAt(0);
+						initialsValid = identifier.charAt(0) == initialName && identifier.charAt(1) == initialSurname;
 					}
+					super.state(context, initialsValid, "identifier", "acme.validation.manager.incorrect-initials.message");
 				}
 			}
 		}
