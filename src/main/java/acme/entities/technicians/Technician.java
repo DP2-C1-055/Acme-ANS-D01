@@ -26,32 +26,32 @@ public class Technician extends AbstractEntity {
 	// Attributes -------------------------------------------------------------
 
 	@Mandatory
-	@ValidString(pattern = "^[A-Z]{2-3}\\d{6}$")
+	@ValidString(min=8, max=9, pattern = "^[A-Z]{2-3}\\d{6}$")
 	@Column(unique = true)
 	private String				licenseNumber;
 
 	@Mandatory
-	@ValidString(pattern = "^\\+?\\d{6,15}$")
+	@ValidString(min=6, max=16, pattern = "^\\+?\\d{6,15}$")
 	@Automapped
 	private String				phoneNumber;
 
 	@Mandatory
-	@ValidString(max = 50)
+	@ValidString(min=1, max=50)
 	@Automapped
 	private String				specialisation;
 
 	@Mandatory
-	@Valid
+	@ValidBoolean
 	@Automapped
-	private AnnualHealthTest	annualHealthTest;
+	private Boolean	annualHealthTest;
 
 	@Mandatory
-	@ValidNumber
+	@ValidNumber(min=0, max=120)
 	@Automapped
 	private Integer				experienceYears;
 
 	@Optional
-	@ValidString(max = 255)
+	@ValidString(min=0, max=255)
 	@Automapped
 	private String				certifications;
 }
