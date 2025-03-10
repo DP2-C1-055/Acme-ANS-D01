@@ -1,18 +1,18 @@
 
 package acme.constraints;
 
+import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import javax.validation.Constraint;
 import javax.validation.Payload;
 
-@Target(ElementType.TYPE)
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = ManagerValidator.class)
-public @interface ValidManager {
+@Documented
+public @interface ValidIdentifier {
 
 	// Standard validation properties -----------------------------------------
 	String message() default "";
